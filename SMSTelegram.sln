@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSTelegram", "SMSTelegram\SMSTelegram.csproj", "{129B4E1A-D0D4-4812-AA94-98E5447AC3D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSTelegram.Application", "SMSTelegram.Application\SMSTelegram.Application.csproj", "{DEFE6C57-36B4-4352-B76A-0118924A6EB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSTelegram.Domain", "SMSTelegram.Domain\SMSTelegram.Domain.csproj", "{A4488D43-DDB5-4708-8900-1BC1A5E2A8E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{129B4E1A-D0D4-4812-AA94-98E5447AC3D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{129B4E1A-D0D4-4812-AA94-98E5447AC3D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{129B4E1A-D0D4-4812-AA94-98E5447AC3D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{129B4E1A-D0D4-4812-AA94-98E5447AC3D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEFE6C57-36B4-4352-B76A-0118924A6EB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEFE6C57-36B4-4352-B76A-0118924A6EB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEFE6C57-36B4-4352-B76A-0118924A6EB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEFE6C57-36B4-4352-B76A-0118924A6EB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4488D43-DDB5-4708-8900-1BC1A5E2A8E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4488D43-DDB5-4708-8900-1BC1A5E2A8E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4488D43-DDB5-4708-8900-1BC1A5E2A8E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4488D43-DDB5-4708-8900-1BC1A5E2A8E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
