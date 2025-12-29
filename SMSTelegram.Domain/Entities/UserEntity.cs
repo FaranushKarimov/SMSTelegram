@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace SMSTelegram.Domain.Entities;
-
-public class UserEntity
+[Table("users")]
+public sealed class UserEntity
 {
     [Key] 
     [JsonProperty("userId")]

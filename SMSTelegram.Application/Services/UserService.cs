@@ -22,4 +22,14 @@ public class UserService(SmsDbContext smsDbContext) : IUserService
 
         return user.ToDto();
     }
+    
+    public async Task<List<string>> GetAllUniqueTelegramUserIdsAsync(CancellationToken cancellationToken)
+    {
+        return await smsDbContext.Users
+            .AsNoTracking()
+            .Where(u => !string.IsNullOrEmpty(u.UserTelegramId))
+            .Select(u => u.UserTelegramId!)
+            .Distinct()
+            .ToListAsync(cancellationToken);
+    }
 }

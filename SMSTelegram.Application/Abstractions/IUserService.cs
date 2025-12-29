@@ -5,4 +5,5 @@ namespace SMSTelegram.Application.Abstractions;
 public interface IUserService
 {
     Task<UserDto> GetByPhoneNumberAsync(string phoneNumber);
+    Task<List<string>> GetAllUniqueTelegramUserIdsAsync(CancellationToken cancellationToken);
 }

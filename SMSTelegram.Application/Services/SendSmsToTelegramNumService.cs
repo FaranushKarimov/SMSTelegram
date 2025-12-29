@@ -28,15 +28,20 @@ public class SendSmsToTelegramNumService(
             throw new ArgumentException("Invalid country code.");
         }
 
-        UserDto user;
+        UserDto? user = null;
         try
         {
             user = await userService.GetByPhoneNumberAsync(command.PhoneNumber);
         }
         catch
         {
-            logger.LogMessage($"NotFound: User with phone {command.PhoneNumber} not found.", "404", command.PhoneNumber);
-            throw;
+            await smsService.SendSmsAsync(command.PhoneNumber, command.MessageContent);
+            logger.LogMessage(
+                $"User not found in DB. SMS sent to {command.PhoneNumber} ({countryCode}).",
+                "200",
+                command.PhoneNumber
+            );
+            return;
         }
 
         try
@@ -84,5 +89,31 @@ public class SendSmsToTelegramNumService(
         }
 
         return null;
+    }
+    
+    public async Task BroadcastAsync(string message, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            logger.LogMessage("BadRequest: Broadcast message cannot be empty.", "400", null);
+            throw new ArgumentException("Broadcast message cannot be empty.");
+        }
+
+        var telegramUsers = await userService.GetAllUniqueTelegramUserIdsAsync(cancellationToken);
+
+        foreach (var telegramId in telegramUsers)
+        {
+            try
+            {
+                var chatId = new ChatId(telegramId);
+                await botClient.SendTextMessageAsync(chatId, message, cancellationToken: cancellationToken);
+
+                logger.LogMessage($"Broadcast message sent to Telegram user {telegramId}.", "200", null);
+            }
+            catch (Exception ex)
+            {
+                logger.LogMessage($"Broadcast error for {telegramId}: {ex.Message}", "500", null);
+            }
+        }
     }
 }

@@ -58,5 +58,10 @@ public enum CountryCode
     VaticanCity = 379, 
     Marocco = 212,
     Iran = 98,
-    China = 86
+    China = 86,
+    Israel = 972,
+    Armenia = 374,
+    SouthAfrica = 27,
+    SaudiArabia = 966,
+    UAE = 971,
 }

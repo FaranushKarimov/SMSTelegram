@@ -5,4 +5,5 @@ namespace SMSTelegram.Application.Abstractions;
 public interface ISendSmsToTelegramNumService
 {
     Task HandleAsync(SendSmsCommand command, CancellationToken cancellationToken);
+    Task BroadcastAsync(string message, CancellationToken cancellationToken);
 }
