@@ -3,6 +3,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using SMSTelegram.Application.Abstractions;
 using SMSTelegram.Application.Options;
+using SMSTelegram.Application.Repositories;
+using SMSTelegram.Application.Seeder;
 using SMSTelegram.Application.Services;
 using SMSTelegram.Domain;
 using Telegram.Bot;
@@ -64,7 +66,11 @@ public static class ServiceCollectionsExtensions
     public static WebApplicationBuilder AddIntegrationServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<ICountryCodeService, CountryCodeService>();
+        builder.Services.AddScoped<ICountryCodeRepository, CountryCodeRepository>();
+
         builder.Services.AddHttpClient<ISmsService,SmsService>();
+
         builder.Services.AddScoped<ILoggerService, LoggerService>();
         builder.Services.AddScoped<ISendSmsToTelegramNumService, SendSmsToTelegramNumService>();
         builder.Services.AddSingleton<ITelegramBotClient>(sp =>
