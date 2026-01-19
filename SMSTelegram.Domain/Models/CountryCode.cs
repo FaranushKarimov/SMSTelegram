@@ -64,4 +64,5 @@ public enum CountryCode
     SouthAfrica = 27,
     SaudiArabia = 966,
     UAE = 971,
+    Turkmenistan = 993,
 }

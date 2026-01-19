@@ -1,6 +1,8 @@
 using SMSTelegram.Application.Abstractions;
+using SMSTelegram.Application.Models.CountryCode;
 using SMSTelegram.Application.Models.Sms;
 using SMSTelegram.Application.Models.Users;
+using SMSTelegram.Domain.Entities;
 using SMSTelegram.Domain.Models;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -11,6 +13,7 @@ public class SendSmsToTelegramNumService(
     IUserService userService,
     ISmsService smsService,
     ITelegramBotClient botClient,
+    ICountryCodeService countryService ,
     ILoggerService logger) : ISendSmsToTelegramNumService
 {
     public async Task HandleAsync(SendSmsCommand command, CancellationToken cancellationToken)
@@ -21,7 +24,7 @@ public class SendSmsToTelegramNumService(
             throw new ArgumentException("Phone number and message cannot be empty.");
         }
 
-        var countryCode = ExtractCountryCode(command.PhoneNumber);
+        var countryCode = await ExtractCountryCode(command.PhoneNumber,cancellationToken);
         if (countryCode == null)
         {
             logger.LogMessage("BadRequest: Invalid country code.", "400", command.PhoneNumber);
@@ -64,32 +67,30 @@ public class SendSmsToTelegramNumService(
         }
     }
 
-    private static CountryCode? ExtractCountryCode(string phoneNumber)
+    public async Task<GetCountryDto?> ExtractCountryCode(
+        string phoneNumber,
+        CancellationToken ct)
     {
-        phoneNumber = phoneNumber.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "").Trim();
+        var digits = phoneNumber
+            .Replace("+", "")
+            .Replace(" ", "")
+            .Replace("-", "")
+            .Replace("(", "")
+            .Replace(")", "");
 
-        if (phoneNumber.StartsWith("+"))
-        {
-            string digits = phoneNumber.Substring(1);
-            foreach (CountryCode code in Enum.GetValues(typeof(CountryCode)))
-            {
-                string countryCodeStr = ((int)code).ToString();
-                if (digits.StartsWith(countryCodeStr))
-                    return code;
-            }
-        }
-        else
-        {
-            foreach (CountryCode code in Enum.GetValues(typeof(CountryCode)))
-            {
-                string countryCodeStr = ((int)code).ToString();
-                if (phoneNumber.StartsWith(countryCodeStr))
-                    return code;
-            }
-        }
+        var response = await countryService.GetAllAsync(ct);
 
-        return null;
+        if (response.Data == null || !response.Data.Any())
+            return null;
+
+        var match = response.Data
+            .Where(c => digits.StartsWith(c.Code))   
+            .OrderByDescending(c => c.Code.Length)  
+            .FirstOrDefault();
+
+        return match;
     }
+
     
     public async Task BroadcastAsync(string message, CancellationToken cancellationToken)
     {
